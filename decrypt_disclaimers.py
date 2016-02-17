@@ -17,7 +17,8 @@ PASSWORD = os.environ.get('SIMPLECRYPT_PASSWORD')
 def decrypt_disclaimers(input, output, fieldsep, rowsep):
     encrypted_text = input.read()
     decrypted_text = decrypt(PASSWORD, encrypted_text)
-    decrypted_data = str(decrypted_text).split(fieldsep)
+    decrypted_text = str(decrypted_text).lstrip("b'").rstrip("'")
+    decrypted_data = decrypted_text.split(fieldsep)
 
     with open(output, 'wt') as out:
         wr = csv.writer(out)
