@@ -3,3 +3,4 @@
 *.csv
 .idea/
 disclaimers
+.DS_Store
