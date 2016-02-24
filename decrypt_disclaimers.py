@@ -8,7 +8,7 @@ from django.utils.encoding import smart_str
 from simplecrypt import encrypt, decrypt
 
 
-PASSWORD = os.environ.get('SIMPLECRYPT_PASSWORD')
+PASSWORD = os.environ.get('SIMPLECRYPT_PASSWORD', None)
 
 
 @click.command()
@@ -17,6 +17,9 @@ PASSWORD = os.environ.get('SIMPLECRYPT_PASSWORD')
 @click.option('--fieldsep', default='&&&&&')
 @click.option('--rowsep', default='@@@@@')
 def decrypt_disclaimers(input, output, fieldsep, rowsep):
+    if PASSWORD is None:
+        print('You need to set the SIMPLECRYPT_PASSWORD')
+        return
 
     if output is None:
         # timestamp the filename with the datetime it was downloaded
@@ -36,6 +39,8 @@ def decrypt_disclaimers(input, output, fieldsep, rowsep):
         for entry in decrypted_data:
             data = entry.split(rowsep)
             wr.writerow([smart_str(datum) for datum in data])
+
+    os.unlink(input.name)
 
     print(
         '{} records decrypted and written to {}'.format(
