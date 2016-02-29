@@ -1,3 +1,5 @@
+#!/Users/beckysmith/projects/decrypt/venv/bin/python3
+
 import click
 import csv
 import os
